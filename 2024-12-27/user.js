@@ -9,49 +9,92 @@ const user = {
 
 // 정보에 들어갈 때 자료형이나 오류가 생길만한 엣지케이스를 잘 생각해서 작성한다.
 
+
 // 유저의 정보를 받아서 유효성 검사
 
 // 1. 핸드폰 번호에서 숫자 외의 것이 들어오면 안됨
 // 2. 이름, 핸드폰번호, 나이 정보는 필수
 // 3. address가 있는데 addressDetail이 없는 경우 한번 경고문구 띄우고 그 이후 기능은 실행되지 않게
 
-function isValidUserInfo() {
 
+function isValidUserInfo(user) {
+  if (!user.name || !user.phone || user.age === null) {
+    console.log('이름, 핸드폰번호, 나이는 필수')
+    return false
+  }
+
+  const regexPhone = /^\d+$/;           // 폰 번호 숫자만 허용 (정규식 표현)
+  if (!regexPhone.test(user.phone)) {
+    console.log('숫자만 입력')
+    return false
+  }
+
+  if (user.address && !user.addressDetail) {
+    console.log('주소는 존재하지만 상세 주소가 없습니다.')
+    alert('상세 주소가 없습니다.');
+    return false
+  }
+
+  return true
 }
 
 // 4. 유저 등록하는 api 호출하고 성공하면 성공 메세지 띄우고, 오류나면 오류 로깅하고 오류 메세지 띄우기
-async function createUser() {
+async function createUser(user) {
+  if (!isValidUserInfo(user)) {
+    return
+  }
+  const = await
+  try {
+    console.log("등록 성공");
 
+  } catch (error) {
+    console.log('등록 중 오류');
+
+  }
 }
 
-async function updateUser() {
+async function updateUser(user) {
+  try {
+    console.log("수정 성공");
 
+  } catch (error) {
+    console.log('수정 중 오류');
+  }
 }
 
-async function deleteUser() {
+async function deleteUser(user) {
+  try {
+    console.log("삭제 성공");
 
+  } catch (error) {
+    console.log('삭제 중 오류');
+  }
 }
 
-// 5. 유저 등록 api, 수정 api, 삭제 api (backend) 만들어오기 (api 작성하면서 어떤 부분을 어떻게 생각해서 작성했는 지 단계별로 적어오기)
+// 5. 유저 등록 api, 수정 api, 삭제 api (backend) 만들어오기 (api 작성하면서 어떤 부분을 어떻게 생각해서 작성했는지 단계별로 적어오기)
 router.post('/user/create', asyncHandling(async function (req, res) {
-
+  const user = req.body
 
   res.json({
     res: true,
+    message: '유저가 등록되었습니다.'
   })
 
 }))
 router.post('/user/update', asyncHandling(async function (req, res) {
+  const suer = req.body
 
   res.json({
     res: true,
+    message: '유저 정보가 수정되었습니다.'
   })
 
 }))
 router.post('/user/delete', asyncHandling(async function (req, res) {
-
+  const { id } = req.body
   res.json({
     res: true,
+    message: '${id} 유저가 삭제되었습니다.'
   })
 
 }))
@@ -66,10 +109,10 @@ router.post('/user/delete', asyncHandling(async function (req, res) {
 // 등록에 성공한 유저 정보 보여주기
 // 프로필 이미지도 함께 가져온다
 router.post('/user/item', asyncHandling(async function (req, res) {
-
-  res.json({
-    res: true,
-  })
+  const
+    res.json({
+      res: true,
+    })
 
 }))
 
