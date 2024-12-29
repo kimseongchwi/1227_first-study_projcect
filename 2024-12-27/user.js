@@ -43,10 +43,11 @@ async function createUser(user) {
   if (!isValidUserInfo(user)) {
     return
   }
-  const = await
-  try {
-    console.log("등록 성공");
 
+  try {
+    const response = await fetch('/user/create', {
+      console.log('등록 성공');
+    })
   } catch (error) {
     console.log('등록 중 오류');
 
@@ -54,26 +55,31 @@ async function createUser(user) {
 }
 
 async function updateUser(user) {
-  try {
-    console.log("수정 성공");
 
-  } catch (error) {
-    console.log('수정 중 오류');
+  try {
+    const response = await fetch('/user/update', {
+      console.log('수정 성공');
+
+    }) catch (error) {
+      console.log('수정 중 오류');
+    }
   }
 }
 
 async function deleteUser(user) {
-  try {
-    console.log("삭제 성공");
 
-  } catch (error) {
-    console.log('삭제 중 오류');
+  try {
+    const responst = await fetch('/user/delete', {
+      console.log('삭제 성공');
+    }) catch (error) {
+      console.log('삭제 중 오류');
+    }
   }
 }
 
 // 5. 유저 등록 api, 수정 api, 삭제 api (backend) 만들어오기 (api 작성하면서 어떤 부분을 어떻게 생각해서 작성했는지 단계별로 적어오기)
 router.post('/user/create', asyncHandling(async function (req, res) {
-  const user = req.body
+  const user = req.body // 유저의 전체를 요청하는 것
 
   res.json({
     res: true,
@@ -82,7 +88,7 @@ router.post('/user/create', asyncHandling(async function (req, res) {
 
 }))
 router.post('/user/update', asyncHandling(async function (req, res) {
-  const suer = req.body
+  const user = req.body
 
   res.json({
     res: true,
@@ -109,10 +115,11 @@ router.post('/user/delete', asyncHandling(async function (req, res) {
 // 등록에 성공한 유저 정보 보여주기
 // 프로필 이미지도 함께 가져온다
 router.post('/user/item', asyncHandling(async function (req, res) {
-  const
-    res.json({
-      res: true,
-    })
+  const { id } = req.body
+  res.json({
+    res: true,
+    message: '유저 정보를 확인합니다.'
+  })
 
 }))
 
