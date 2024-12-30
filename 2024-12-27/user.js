@@ -38,6 +38,7 @@ function isValidUserInfo(user) {
   return true
 }
 
+
 // 4. 유저 등록하는 api 호출하고 성공하면 성공 메세지 띄우고, 오류나면 오류 로깅하고 오류 메세지 띄우기
 async function createUser(user) {
   if (!isValidUserInfo(user)) {
