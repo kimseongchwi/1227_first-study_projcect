@@ -100,7 +100,6 @@ router.post('/user/update', asyncHandling(async function (req, res) {
       id: id
     }
   })
-
   res.json({
     res: true,
     user: updatedUser,
@@ -130,6 +129,16 @@ router.post('/user/delete', asyncHandling(async function (req, res) {
 // User, Profile 모델을 만들고 관계를 설정한다
 
 const User = sequelize.define('User', {
+  id: { //내부에서는 얘를 쓰고
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    allowNull: false,
+    primaryKey: true
+  },
+  shortId: { //외부에서는 얘를 쓰고
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+  },
   name: { type: Sequelize.STRING },
   phone: { type: Sequelize.STRING },
   age: { type: Sequelize.INTEGER },
