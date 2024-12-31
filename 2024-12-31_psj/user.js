@@ -149,21 +149,46 @@ sequelize.define('User', {
   },
   addressDetail: {
     type: Sequelize.STRING
+  },
+  createDate: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
   }
 })
 
 sequelize.define('Profile', {
+  description: {
+    type: Sequelize.STRING(500)
+  },
+})
+
+
+Profile.belongsTo(User, {
+  as: 'user',
+  foreignKey: 'userId'
 })
 
 
 // 등록에 성공한 유저 정보 보여주기
 // 프로필 이미지도 함께 가져온다
 router.post('/user/item', asyncHandling(async function (req, res) {
+  const user = await User.findOne({
+    where: {
+      id: req.body.id
+    },
+    include: [
+      {
+        model: Profile,
+        as: 'profile',
+        required: false
+      }
+    ]
+  })
 
   res.json({
     res: true,
+    user
   })
-
 }))
 
 // 핸드폰번호 사이에 - 넣기
@@ -171,8 +196,15 @@ router.post('/user/item', asyncHandling(async function (req, res) {
 // 주소는 addressDetail이 있으면 addressDetail을 붙여서 보여주고 없으면 address만 보여주기
 // 리턴할때는 복사본을 리턴한다
 
-function processUserInfo() {
+function processUserInfo(user) {
+  if (!user) return;
+  const result = { ...user }
 
+  result.phone = user.phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')
+  result.ageText = user.age >= 20 ? '성인' : '미성년자'
+  result.fullAddress = user.addressDetail ? `${user.address}, ${user.addressDetail}` : user.address
+
+  return result;
 }
 
 
